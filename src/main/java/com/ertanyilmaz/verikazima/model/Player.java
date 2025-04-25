@@ -4,15 +4,20 @@ public class Player {
     private String name;
     private String position;
     private String team;
+    private String age;
+    private String nationality;
 
-    // Constructor
-    public Player(String name, String position, String team) {
+    public Player() {}
+
+    public Player(String name, String position, String team, String age, String nationality) {
         this.name = name;
         this.position = position;
         this.team = team;
+        this.age = age;
+        this.nationality = nationality;
     }
 
-    // Getters ve Setters
+    // Getters & Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -21,4 +26,10 @@ public class Player {
 
     public String getTeam() { return team; }
     public void setTeam(String team) { this.team = team; }
+
+    public String getAge() { return age; }
+    public void setAge(String age) { this.age = age; }
+
+    public String getNationality() { return nationality; }
+    public void setNationality(String nationality) { this.nationality = nationality; }
 }
