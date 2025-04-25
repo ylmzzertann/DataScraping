@@ -17,7 +17,7 @@ public class PlayerScraperService {
 
     public List<Player> scrapePlayers() throws Exception {
         List<Player> players = new ArrayList<>();
-        String url = "https://www.transfermarkt.com/super-lig/startseite/wettbewerb/TR1"; // örnek link
+        String url = "https://www.transfermarkt.com/galatasaray-istanbul/kader/verein/141/saison_id/2024"; // örnek link
 
         Document doc = Jsoup.connect(url).userAgent("Mozilla").get();
 
