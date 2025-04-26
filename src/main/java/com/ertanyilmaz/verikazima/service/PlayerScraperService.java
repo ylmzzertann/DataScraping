@@ -13,29 +13,36 @@ import java.util.List;
 @Service
 public class PlayerScraperService {
 
-    public List<Player> scrapePlayersFromHtml(String html) {
+    public List<Player> scrapePlayersFromHtml(String pageSource) {
         List<Player> players = new ArrayList<>();
-        Document doc = Jsoup.parse(html);
+        Document doc = Jsoup.parse(pageSource);
 
-        Elements rows = doc.select("table.items > tbody > tr");
+        Elements playerRows = doc.select("table.items > tbody > tr");
 
-        for (Element row : rows) {
+        for (Element row : playerRows) {
             try {
-                // İç içe tablo yapısına göre doğru selector'lar
-                Element inlineTable = row.selectFirst("td.posrela table.inline-table");
-                if (inlineTable == null) continue;
+                // İsim
+                Element nameElement = row.selectFirst("td.posrela table.inline-table td.hauptlink a");
+                String name = (nameElement != null) ? nameElement.text().trim() : "";
 
-                String name = inlineTable.select("td.hauptlink > a").text();
-                String position = inlineTable.select("tr:nth-of-type(2) > td").text();
+                // Pozisyon
+                Element positionElement = row.selectFirst("td.posrela table.inline-table tr:nth-of-type(2) td");
+                String position = (positionElement != null) ? positionElement.text().trim() : "";
 
-                String age = row.select("td.zentriert:nth-of-type(2)").text();
-                String nationality = row.select("td.zentriert:nth-of-type(3) img").attr("title");
+                // Yaş
+                Element ageElement = row.select("td.zentriert").get(1);
+                String age = (ageElement != null) ? ageElement.text().trim() : "";
 
-                Player player = new Player(name, position, "Galatasaray", age, nationality);
-                players.add(player);
+                // Uyruk (sadece 1. img alıyoruz)
+                Element nationalityElement = row.selectFirst("td.zentriert img");
+                String nationality = (nationalityElement != null) ? nationalityElement.attr("title").trim() : "";
 
+                if (!name.isEmpty()) { // sadece ismi olanları ekleyelim
+                    Player player = new Player(name, position, "Galatasaray", age, nationality);
+                    players.add(player);
+                }
             } catch (Exception e) {
-                System.out.println("Hatalı satır atlandı: " + e.getMessage());
+                System.out.println("Satırda hata: " + e.getMessage());
             }
         }
 

@@ -9,19 +9,17 @@ public class SeleniumPlayerScraper {
 
     public String getPageSource(String url) {
         System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
-
         WebDriver driver = new ChromeDriver();
         driver.get(url);
 
         try {
-            Thread.sleep(5000); // Sayfanın yüklenmesini bekle
+            Thread.sleep(5000); // sayfanın tam yüklenmesi için
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         String pageSource = driver.getPageSource();
         driver.quit();
-
         return pageSource;
     }
 }
