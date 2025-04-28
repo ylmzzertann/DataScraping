@@ -13,7 +13,7 @@ public class SeleniumPlayerScraper {
         driver.get(url);
 
         try {
-            Thread.sleep(5000); // sayfanın tam yüklenmesi için
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
