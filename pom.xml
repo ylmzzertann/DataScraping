@@ -92,6 +92,11 @@
     <scope>runtime</scope>
 </dependency>
 
+<dependenc>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-devtools-v135</artifactId>
+    <version>4.25.0</version>
+</dependenc>
     
 	</dependencies>
 

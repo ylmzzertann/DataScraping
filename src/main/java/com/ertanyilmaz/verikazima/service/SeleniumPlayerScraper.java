@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -14,17 +15,21 @@ public class SeleniumPlayerScraper {
     public String getPageSource(String url) {
         System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
 
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options);
         try {
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.get(url);
 
             // ✅ Sayfa yüklendikten sonra page source al
-            String pageHtml = driver.getPageSource();
-
-            return pageHtml;
+            return driver.getPageSource();
         } finally {
-            // ✅ Mutlaka en son kapat! getPageSource ALINDIKTAN SONRA!
             driver.quit();
         }
     }
