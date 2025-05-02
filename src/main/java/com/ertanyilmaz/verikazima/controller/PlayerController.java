@@ -9,6 +9,7 @@ import com.ertanyilmaz.verikazima.service.TeamScraperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,36 +28,35 @@ public class PlayerController {
     @Autowired
     private TeamScraperService teamScraperService;
 
-    // ✅ Sadece Galatasaray oyuncularını kazıyan method
     @GetMapping("/scrape")
     public List<Player> scrapeGalatasarayPlayers() {
-        String url = "https://www.transfermarkt.com/galatasaray-istanbul/kader/verein/141/saison_id/2024";
+        String url = "https://www.transfermarkt.com.tr/galatasaray-istanbul/kader/verein/141/saison_id/2024";
         String pageHtml = seleniumScraper.getPageSource(url);
-        List<Player> players = jsoupParser.scrapePlayersFromHtml(pageHtml);
+        List<Player> players = jsoupParser.scrapePlayersFromHtml(pageHtml, "Galatasaray");
 
-        // Veritabanına kaydet
         playerRepository.saveAll(players);
-
         return players;
     }
 
-    // ✅ Süper Lig'teki tüm takımların oyuncularını kazıyacak yeni method
     @GetMapping("/scrape-all")
     public List<Player> scrapeAllPlayers() {
-        // 1. Tüm Süper Lig takımlarını çek
         List<Team> teams = teamScraperService.scrapeTeams();
-        System.out.println("Çekilen takım sayısı: " + teams.size());
+        List<Player> allPlayers = new ArrayList<>();
 
-        // 2. Tüm takımların oyuncularını çek
-        List<Player> players = teamScraperService.scrapePlayersByTeams(teams);
-        System.out.println("Çekilen toplam oyuncu sayısı: " + players.size());
-
-        // 3. Veritabanına kaydet
-        if (!players.isEmpty()) {
-            playerRepository.saveAll(players);
+        for (Team team : teams) {
+            try {
+                String html = seleniumScraper.getPageSource(team.getLink());
+                List<Player> teamPlayers = jsoupParser.scrapePlayersFromHtml(html, team.getName());
+                allPlayers.addAll(teamPlayers);
+            } catch (Exception e) {
+                System.out.println("❌ " + team.getName() + " takımında hata: " + e.getMessage());
+            }
         }
 
-        // 4. JSON olarak döndür
-        return players;
+        if (!allPlayers.isEmpty()) {
+            playerRepository.saveAll(allPlayers);
+        }
+
+        return allPlayers;
     }
 }
