@@ -21,15 +21,18 @@ public class PlayerScraperService {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(pageSource);
 
-        // 🔍 Sayfa başlığından takım adını çek (örneğin: Galatasaray A takım kadrosu...)
+        // ✅ Takım adı doğru CSS seçici ile alınır
         String teamName = fallbackTeamName;
         try {
-            Element heading = doc.selectFirst("div.data-header__headline-wrapper h1");
+            Element heading = doc.selectFirst("h1.data-header__headline-wrapper");
             if (heading != null) {
-                teamName = heading.text().replace(" A takım kadrosu", "").trim(); // Gereksiz kısımları temizle
+                teamName = heading.text().trim();
+                logger.info("📌 Sayfadan alınan takım adı: {}", teamName);
+            } else {
+                logger.warn("⚠️ h1 etiketi bulunamadı, fallback takım adı kullanılacak: {}", fallbackTeamName);
             }
         } catch (Exception e) {
-            logger.warn("Takım adı çekilemedi, fallback değeri kullanılacak: {}", fallbackTeamName);
+            logger.warn("⚠️ Takım adı çekilemedi, fallback değeri kullanılacak: {}", fallbackTeamName);
         }
 
         Elements playerRows = doc.select("table.items > tbody > tr");

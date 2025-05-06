@@ -1,1 +1,163 @@
-[]
+[ {
+  "name" : "Okan Kocuk",
+  "position" : "Kaleci",
+  "team" : "",
+  "age" : "29",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Halil Yeral",
+  "position" : "Kaleci",
+  "team" : "",
+  "age" : "25",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Taha Tosun",
+  "position" : "Kaleci",
+  "team" : "",
+  "age" : "20",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Efe Berat Törüz",
+  "position" : "Kaleci",
+  "team" : "",
+  "age" : "18",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Rick van Drongelen",
+  "position" : "Stoper",
+  "team" : "",
+  "age" : "26",
+  "nationality" : "Hollanda"
+}, {
+  "name" : "Lubomir Satka",
+  "position" : "Stoper",
+  "team" : "",
+  "age" : "29",
+  "nationality" : "Slovakya"
+}, {
+  "name" : "Yunus Emre Çift",
+  "position" : "Stoper",
+  "team" : "",
+  "age" : "21",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Bedirhan Çetin",
+  "position" : "Stoper",
+  "team" : "",
+  "age" : "18",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Elano Yegen",
+  "position" : "Stoper",
+  "team" : "",
+  "age" : "22",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Marc Bola",
+  "position" : "Sol Bek",
+  "team" : "",
+  "age" : "27",
+  "nationality" : "İngiltere"
+}, {
+  "name" : "Soner Gönül",
+  "position" : "Sol Bek",
+  "team" : "",
+  "age" : "27",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Nanu",
+  "position" : "Sağ Bek",
+  "team" : "",
+  "age" : "30",
+  "nationality" : "Gine-Bissau"
+}, {
+  "name" : "Zeki Yavru",
+  "position" : "Sağ Bek",
+  "team" : "",
+  "age" : "33",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Youssef Aït Bennasser",
+  "position" : "Ön Libero",
+  "team" : "",
+  "age" : "28",
+  "nationality" : "Fas"
+}, {
+  "name" : "Celil Yüksel",
+  "position" : "Merkez Orta Saha",
+  "team" : "",
+  "age" : "27",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Flavien Tait",
+  "position" : "Merkez Orta Saha",
+  "team" : "",
+  "age" : "32",
+  "nationality" : "Fransa"
+}, {
+  "name" : "Muhammet Özbaskıcı",
+  "position" : "Merkez Orta Saha",
+  "team" : "",
+  "age" : "19",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Soner Aydoğdu",
+  "position" : "Merkez Orta Saha",
+  "team" : "",
+  "age" : "34",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Alper Efe Pazar",
+  "position" : "Merkez Orta Saha",
+  "team" : "",
+  "age" : "20",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Carlo Holse",
+  "position" : "On Numara",
+  "team" : "",
+  "age" : "25",
+  "nationality" : "Danimarka"
+}, {
+  "name" : "Olivier Ntcham",
+  "position" : "On Numara",
+  "team" : "",
+  "age" : "29",
+  "nationality" : "Kamerun"
+}, {
+  "name" : "Landry Dimata",
+  "position" : "Sol Kanat",
+  "team" : "",
+  "age" : "27",
+  "nationality" : "Belçika"
+}, {
+  "name" : "Emre Kılınç",
+  "position" : "Sol Kanat",
+  "team" : "",
+  "age" : "30",
+  "nationality" : "Türkiye"
+}, {
+  "name" : "Arbnor Muja",
+  "position" : "Sağ Kanat",
+  "team" : "",
+  "age" : "26",
+  "nationality" : "Arnavutluk"
+}, {
+  "name" : "Kingsley Schindler",
+  "position" : "Sağ Kanat",
+  "team" : "",
+  "age" : "31",
+  "nationality" : "Gana"
+}, {
+  "name" : "Marius Mouandilmadji",
+  "position" : "Santrafor",
+  "team" : "",
+  "age" : "27",
+  "nationality" : "Cad"
+}, {
+  "name" : "Berhan Deniz",
+  "position" : "Santrafor",
+  "team" : "",
+  "age" : "20",
+  "nationality" : "Türkiye"
+} ]

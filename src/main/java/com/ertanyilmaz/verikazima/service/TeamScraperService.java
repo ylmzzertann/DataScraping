@@ -48,14 +48,14 @@ public class TeamScraperService {
 
             for (WebElement row : rows) {
                 try {
-                    List<WebElement> linkElements = row.findElements(By.cssSelector("td.no-border-links > a"));
-                    if (!linkElements.isEmpty()) {
-                        WebElement linkElement = linkElements.get(0);
-                        String name = linkElement.getText().trim();
-                        String href = linkElement.getAttribute("href").replace("/startseite/", "/kader/");
-                        teams.add(new Team(name, href));
-                        logger.info("✅ Team found: {} -> {}", name, href);
-                    }
+                    // ✅ Doğru hücre: td.no-border-links > a (takım ismi burada)
+                    WebElement nameLink = row.findElement(By.cssSelector("td.no-border-links a"));
+                    String teamName = nameLink.getText().trim();
+                    String rawLink = nameLink.getAttribute("href");
+                    String teamLink = rawLink.replace("/startseite/", "/kader/");
+
+                    teams.add(new Team(teamName, teamLink));
+                    logger.info("✅ Team found: {} -> {}", teamName, teamLink);
                 } catch (Exception e) {
                     logger.warn("⚠️ Failed to parse team row: {}", e.getMessage());
                 }
@@ -69,6 +69,8 @@ public class TeamScraperService {
         return teams;
     }
 
+    
+
     public List<Player> scrapePlayersByTeams(List<Team> teams) {
         List<Player> players = new ArrayList<>();
 
@@ -77,6 +79,10 @@ public class TeamScraperService {
                 String pageHtml = seleniumScraper.getPageSource(team.getLink());
                 List<Player> teamPlayers = playerScraperService.scrapePlayersFromHtml(pageHtml, team.getName());
                 players.addAll(teamPlayers);
+
+                logger.info("⏳ {} oyuncular çekildi. Sonraki takıma geçmeden önce 10 saniye bekleniyor...", team.getName());
+                Thread.sleep(10000); // 10 saniye bekle
+
             } catch (Exception e) {
                 logger.error("❌ Error scraping team {}: {}", team.getName(), e.getMessage());
             }
