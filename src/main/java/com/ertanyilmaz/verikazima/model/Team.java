@@ -1,22 +1,33 @@
 package com.ertanyilmaz.verikazima.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "teams")
 public class Team {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
-    private String link;
+    private String url;
 
-    public Team(String name, String link) {
+    public Team() {
+    }
+
+    public Team(String name, String url) {
         this.name = name;
-        this.link = link;
+        this.url = url;
     }
 
+    // Getters and setters...
+
+    public Long getId() { return id; }
     public String getName() { return name; }
+    public String getUrl() { return url; }
+
+    public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
-
-    public String getLink() { return link; }
-    public void setLink(String link) { this.link = link; }
-
-    @Override
-    public String toString() {
-        return "Team{name='" + name + "', link='" + link + "'}";
-    }
+    public void setUrl(String url) { this.url = url; }
 }

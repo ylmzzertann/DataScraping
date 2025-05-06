@@ -11,8 +11,8 @@ public class JsonLoaderController {
     private JsonToDatabaseLoader jsonToDatabaseLoader;
 
     @GetMapping("/json-load")
-    public String loadJsonToDb() {
-        jsonToDatabaseLoader.loadPlayersFromJson("players.json"); // players.json kök dizindeyse
-        return "✅ JSON verisi başarıyla veritabanına kaydedildi.";
+    public String loadJsonToDB() {
+        jsonToDatabaseLoader.loadFromJson("players.json");
+        return "JSON verisi başarıyla veritabanına kaydedildi.";
     }
 }

@@ -1,12 +1,9 @@
 package com.ertanyilmaz.verikazima.service;
 
 import com.ertanyilmaz.verikazima.model.Player;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,50 +12,58 @@ import java.util.List;
 @Service
 public class PlayerScraperService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlayerScraperService.class);
-
-    public List<Player> scrapePlayersFromHtml(String pageSource, String fallbackTeamName) {
+    public List<Player> scrapePlayersFromESPN(String url, String teamName) {
         List<Player> players = new ArrayList<>();
-        Document doc = Jsoup.parse(pageSource);
 
-        // ✅ Takım adı doğru CSS seçici ile alınır
-        String teamName = fallbackTeamName;
+        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1080", "--no-sandbox", "--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options);
+
         try {
-            Element heading = doc.selectFirst("h1.data-header__headline-wrapper");
-            if (heading != null) {
-                teamName = heading.text().trim();
-                logger.info("📌 Sayfadan alınan takım adı: {}", teamName);
-            } else {
-                logger.warn("⚠️ h1 etiketi bulunamadı, fallback takım adı kullanılacak: {}", fallbackTeamName);
-            }
-        } catch (Exception e) {
-            logger.warn("⚠️ Takım adı çekilemedi, fallback değeri kullanılacak: {}", fallbackTeamName);
-        }
+            driver.get(url);
+            List<WebElement> rows = driver.findElements(By.cssSelector("tbody tr.Table__TR"));
 
-        Elements playerRows = doc.select("table.items > tbody > tr");
+            for (WebElement row : rows) {
+                try {
+                    List<WebElement> cells = row.findElements(By.cssSelector("td.Table__TD"));
+                    if (cells.size() >= 6) {
+                        String name = "";
+                        String number = "";
+                        try {
+                            WebElement nameAnchor = cells.get(0).findElement(By.cssSelector("a.AnchorLink"));
+                            name = nameAnchor.getText().trim();
+                        } catch (NoSuchElementException e) {
+                            System.out.println("İsim verisi bulunamadı.");
+                        }
 
-        for (Element row : playerRows) {
-            try {
-                Element nameElement = row.selectFirst("td.posrela table.inline-table td.hauptlink a");
-                String name = (nameElement != null) ? nameElement.text().trim() : "";
+                        try {
+                            WebElement span = cells.get(0).findElement(By.cssSelector("span.p12.n10"));
+                            number = span.getText().trim();
+                        } catch (NoSuchElementException e) {
+                            System.out.println("Numara verisi bulunamadı.");
+                        }
 
-                Element positionElement = row.selectFirst("td.posrela table.inline-table tr:nth-of-type(2) td");
-                String position = (positionElement != null) ? positionElement.text().trim() : "";
+                        String position = cells.get(1).getText().trim();
+                        String age = cells.get(2).getText().trim();
+                        String height = cells.get(3).getText().trim();
+                        String weight = cells.get(4).getText().trim();
+                        String nationality = cells.get(5).getText().trim();
 
-                Element ageElement = row.select("td.zentriert").get(1);
-                String age = (ageElement != null) ? ageElement.text().trim() : "";
-
-                Element nationalityElement = row.selectFirst("td.zentriert img");
-                String nationality = (nationalityElement != null) ? nationalityElement.attr("title").trim() : "";
-
-                if (!name.isEmpty()) {
-                    Player player = new Player(name, position, teamName, age, nationality);
-                    players.add(player);
-                    logger.info("✅ Player: {} | Position: {} | Age: {} | Nationality: {} | Team: {}", name, position, age, nationality, teamName);
+                        // Oyuncu ismi boşsa bu satırı atla
+                        if (!name.isEmpty()) {
+                            Player player = new Player(name, nationality, age, position, teamName, height, weight);
+                            players.add(player);
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Satır atlandı: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                logger.warn("⚠️ Satırda hata: {}", e.getMessage());
             }
+
+        } finally {
+            driver.quit();
         }
 
         return players;
